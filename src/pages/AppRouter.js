@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Comments from "./mortar/comments";
 import Home from "./Home";
+import MakeWishes from "./makeWishes";
 
 const AppRouter = ({ isLoggedIn }) => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = ({ isLoggedIn }) => {
 
         {/*코멘트 작성 화면 라우팅*/}
         <Route path="/comments" element={<Comments />}></Route>
+        <Route path="/makewish" element={<MakeWishes />}></Route>
       </Routes>
     </Router>
   );
