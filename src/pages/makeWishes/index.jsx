@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../routes/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { firestore } from "../../routes/firebase";
 
 export default function MakeWishes() {
   const [wish, setWish] = useState("");
   const navigate = useNavigate();
   const onSubmit = async () => {
     try {
-      const result = await addDoc(collection(db, "wish"), {
+      await firestore.collection("wish").add({
         content: wish,
         createdAt: new Date(),
         uid: 2,
       });
-      console.log(result);
       navigate("/");
     } catch (err) {
       console.error(err);
