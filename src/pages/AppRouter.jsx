@@ -1,8 +1,9 @@
 //절구통 코멘트 관련 모듈 import
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Comments from "./mortar/comments";
+import Comments from "./comment/comments";
 import Home from "./Home";
 import Auth from "./login/auth";
+import MakeWishes from "./makeWishes";
 
 const AppRouter = ({ isLoggedIn }) => {
   console.log(isLoggedIn);
