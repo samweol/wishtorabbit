@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import React, { useState } from "react";
+import uuid from "react-uuid";
 
 const Auth = () => {
   const [email, setEmail] = useState(""); // email
@@ -44,7 +45,7 @@ const Auth = () => {
             email: data.user.email,
             password: data.user.reloadUserInfo.passwordHash, //pw hash
             uid: data.user.uid,
-            wid: 99,
+            wid: uuid(),
           });
         } catch (error) {
           console.error("Error adding document: ", error);
