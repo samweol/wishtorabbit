@@ -9,9 +9,14 @@ const Home = () => {
   const homeToComments = () => {
     navigation("/comments");
   };
+  const navigateToMakeWish = () => {
+    navigation("/makewish");
+  };
 
   return (
     <div>
+      {/*makeWish button*/}
+      <button onClick={navigateToMakeWish}>나만의 소원 달 만들기</button>
       {/*mortar button*/}
       <button onClick={homeToComments} className="mortarBtn">
         코멘트 달아주기

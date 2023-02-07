@@ -3,19 +3,24 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
 
+import Auth from "./login/auth";
+import MakeWishes from "./makeWishes";
+
 const AppRouter = ({ isLoggedIn }) => {
+  console.log(isLoggedIn);
   return (
     <Router>
       <Routes>
-        {/*로그인 여부 상관없이 전부 Home으로 가게 해둔 상태입니다.*/}
+        {/*로그인 성공 시 Home으로, 실패 시 auth로 넘어갑니다.*/}
         {isLoggedIn ? (
           <Route path="/" element={<Home />}></Route>
         ) : (
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/auth" element={<Auth />}></Route>
         )}
 
         {/*코멘트 작성 화면 라우팅*/}
         <Route path="/comments" element={<Comments />}></Route>
+        <Route path="/makewish" element={<MakeWishes />}></Route>
       </Routes>
     </Router>
   );
