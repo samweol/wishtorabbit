@@ -1,17 +1,26 @@
-import { React, useEffect, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { authService } from "../routes/firebase";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
 import Auth from "./login/auth";
 import MakeWishes from "./makeWishes";
+import { UserContext } from "../context/UserContext";
 
 function App() {
   const [init, setInit] = useState(false); // 화면 초기화 여부
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
   const navigate = useNavigate();
-  // 아래의 코드를 firestore에서 가져오는 방식으로 수정해야 합니다.
-  // 로그인 정보 전역관리 완료하면 수정 예정
+  const { user, setUser } = useContext(UserContext);
+
+  const fetchUser = async () => {
+    try {
+      // 파이어베이스에서 user 정보 가져오기
+      // setUser 사용해서 가져온 정보 담기
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
@@ -26,6 +35,7 @@ function App() {
     setInit(true); // user 정보 확인되면 초기화 완료
     if (isLoggedIn) {
       navigate("/");
+      //fetchUser 호출하기
     } else {
       navigate("/auth");
     }
