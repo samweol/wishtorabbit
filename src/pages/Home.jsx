@@ -9,7 +9,6 @@ const Home = () => {
   const homeToComments = () => {
     navigation("/comments");
   };
-
   const navigateToMakeWish = () => {
     navigation("/makewish");
   };

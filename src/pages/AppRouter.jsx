@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
+
 import Auth from "./login/auth";
 import MakeWishes from "./makeWishes";
 
