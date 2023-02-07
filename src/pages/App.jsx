@@ -15,8 +15,11 @@ function App() {
 
   const fetchUser = async () => {
     try {
-      // 파이어베이스에서 user 정보 가져오기
+      // 파이어베이스에서 user 정보 가져오기 -> await 써
       // setUser 사용해서 가져온 정보 담기
+      // setUser({
+      //   uid : data.id
+      // })
     } catch (err) {
       console.log(err);
     }
