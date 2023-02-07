@@ -18,6 +18,7 @@ const AppRouter = ({ isLoggedIn }) => {
 
         {/*코멘트 작성 화면 라우팅*/}
         <Route path="/comments" element={<Comments />}></Route>
+        <Route path="/makewish" element={<MakeWishes />}></Route>
       </Routes>
     </Router>
   );
