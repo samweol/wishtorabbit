@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Home = () => {
-  // const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   //define navigation
   const navigation = useNavigate();
 
@@ -15,7 +15,7 @@ const Home = () => {
     navigation("/makewish");
   };
 
-  // console.log(user)
+  console.log("USER: ", user); // user 확인
 
   return (
     <div>
