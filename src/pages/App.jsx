@@ -40,7 +40,7 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserId(user.uid); // 원하는 유저를 firestore에서 가져오기 위해 email 저장(유저판별용)
+        setUserId(user.uid); // 원하는 유저를 firestore에서 가져오기 위해 uid 저장(유저판별용)
       } else {
         setIsLoggedIn(false);
       }
