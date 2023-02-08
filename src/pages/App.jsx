@@ -1,25 +1,37 @@
 import { React, useContext, useEffect, useState } from "react";
-import { authService } from "../routes/firebase";
+import { authService, dbService } from "../routes/firebase";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
 import Auth from "./login/auth";
 import MakeWishes from "./makeWishes";
 import { UserContext } from "../context/UserContext";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 function App() {
   const [init, setInit] = useState(false); // 화면 초기화 여부
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+  const [userId, setUserId] = useState("");
 
   const fetchUser = async () => {
     try {
-      // 파이어베이스에서 user 정보 가져오기 -> await 써
-      // setUser 사용해서 가져온 정보 담기
-      // setUser({
-      //   uid : data.id
-      // })
+      const q = query(
+        collection(dbService, "user"),
+        where("uid", "==", userId) // uid로 특정 user 가져오기
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        setUser({
+          uid: data.uid,
+          email: data.email,
+          name: data.name,
+          password: data.password,
+          wid: data.wid,
+        });
+      });
     } catch (err) {
       console.log(err);
     }
@@ -28,6 +40,7 @@ function App() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
+        setUserId(user.uid); // 원하는 유저를 firestore에서 가져오기 위해 uid 저장(유저판별용)
       } else {
         setIsLoggedIn(false);
       }
@@ -38,7 +51,7 @@ function App() {
     setInit(true); // user 정보 확인되면 초기화 완료
     if (isLoggedIn) {
       navigate("/");
-      //fetchUser 호출하기
+      fetchUser();
     } else {
       navigate("/auth");
     }
