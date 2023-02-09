@@ -1,17 +1,13 @@
 import { authService, dbService } from "../../routes/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import uuid from "react-uuid";
 
-const Auth = () => {
+const Register = () => {
   const [email, setEmail] = useState(""); // email
   const [password, setPassword] = useState(""); // password
   const [username, setUsername] = useState(""); // username
-  const [newAccount, setNewAccount] = useState(true); // 회원가입 판별 여부
 
   const onChange = (event) => {
     // email, password, username 입력창 상태 확인
@@ -31,29 +27,22 @@ const Auth = () => {
     event.preventDefault();
     try {
       let data;
-      if (newAccount) {
-        // crete account
-        data = await createUserWithEmailAndPassword(
-          authService,
-          email,
-          password
-        );
-        // firestore에 auth 정보 저장
-        try {
-          await addDoc(collection(dbService, "user"), {
-            name: username,
-            email: data.user.email,
-            password: data.user.reloadUserInfo.passwordHash, //pw hash
-            uid: data.user.uid,
-            wid: uuid(),
-          });
-        } catch (error) {
-          console.error("Error adding document: ", error);
-        }
-      } else {
-        // login
-        data = await signInWithEmailAndPassword(authService, email, password);
+
+      // crete account
+      data = await createUserWithEmailAndPassword(authService, email, password);
+      // firestore에 auth 정보 저장
+      try {
+        await addDoc(collection(dbService, "user"), {
+          name: username,
+          email: data.user.email,
+          password: data.user.reloadUserInfo.passwordHash, //pw hash
+          uid: data.user.uid,
+          wid: uuid(),
+        });
+      } catch (error) {
+        console.error("Error adding document: ", error);
       }
+
       console.log(data);
     } catch (error) {
       console.log(error.message);
@@ -86,9 +75,9 @@ const Auth = () => {
           onChange={onChange}
         />
         {/* newAccount 값이 ture이면 회원가입 버튼, 아니라면 로그인 버튼 */}
-        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+        <input type="submit" value="Create Account" />
       </form>
     </div>
   );
 };
-export default Auth;
+export default Register;

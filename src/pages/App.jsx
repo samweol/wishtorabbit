@@ -3,7 +3,9 @@ import { authService, dbService } from "../routes/firebase";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
-import Auth from "./login/auth";
+import Auth from "./auth";
+import LogIn from "./auth/login";
+import Register from "./auth/register";
 import MakeWishes from "./makeWishes";
 import { UserContext } from "../context/UserContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -61,6 +63,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />}></Route>
       <Route path="/auth" element={<Auth />}></Route>
+      <Route path="/login" element={<LogIn />}></Route>
+      <Route path="/register" element={<Register />}></Route>
       <Route path="/comments" element={<Comments />}></Route>
       <Route path="/makewish" element={<MakeWishes />}></Route>
     </Routes>
