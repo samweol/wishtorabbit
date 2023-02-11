@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
@@ -8,13 +8,15 @@ export default function Auth() {
   const onLogInClick = () => setHaveAccount(true);
   const onRegisterClick = () => setHaveAccount(false);
 
-  if (haveAccount) {
-    // 계정이 있기 때문에 로그인 화면으로
-    navigate("/login");
-  } else {
-    // 계정이 없기 때문에 회원가입 화면으로
-    navigate("/register");
-  }
+  useEffect(() => {
+    if (haveAccount) {
+      // 계정이 있기 때문에 로그인 화면으로
+      navigate("/login");
+    } else {
+      // 계정이 없기 때문에 회원가입 화면으로
+      navigate("/register");
+    }
+  }, [haveAccount]);
 
   return (
     <div>
