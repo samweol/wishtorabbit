@@ -18,6 +18,8 @@ function App() {
   const { user, setUser } = useContext(UserContext);
   const [userId, setUserId] = useState("");
 
+  console.log("user상태", user);
+
   const fetchUser = async () => {
     try {
       const q = query(
