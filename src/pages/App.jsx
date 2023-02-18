@@ -1,77 +1,26 @@
-import { React, useContext, useEffect, useState } from "react";
-import { authService, dbService } from "../routes/firebase";
-import { Routes, Route, useNavigate } from "react-router-dom";
+//모듈 import
+import { React } from "react";
+import { Routes, Route } from "react-router-dom";
+
+//라우팅 화면 import
 import Comments from "./comment/comments";
 import Home from "./Home";
-import Auth from "./auth";
+import Auth from "./auth/index";
 import LogIn from "./auth/login";
 import Register from "./auth/register";
 import MakeWishes from "./makeWishes";
 import SharePage from "./linkShare/index";
-import { UserContext } from "../context/UserContext";
-import { collection, query, where, getDocs } from "firebase/firestore";
 
 function App() {
-  const [init, setInit] = useState(false); // 화면 초기화 여부
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 여부
-  const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
-  const [userId, setUserId] = useState("");
-
-  const fetchUser = async () => {
-    try {
-      const q = query(
-        collection(dbService, "user"),
-        where("uid", "==", userId) // uid로 특정 user 가져오기
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        setUser({
-          uid: data.uid,
-          email: data.email,
-          name: data.name,
-          password: data.password,
-          wid: data.wid,
-        });
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUserId(user.uid); // 원하는 유저를 firestore에서 가져오기 위해 uid 저장(유저판별용)
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    setInit(true); // user 정보 확인되면 초기화 완료
-    if (isLoggedIn) {
-      navigate("/");
-      fetchUser();
-    } else {
-      navigate("/auth");
-    }
-  }, [isLoggedIn]);
-
   return (
     <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/auth" element={<Auth />}></Route>
+      <Route path="/" element={<Auth />}></Route>
+      <Route path="/home" element={<Home />}></Route>
       <Route path="/login" element={<LogIn />}></Route>
       <Route path="/register" element={<Register />}></Route>
       <Route path="/comments" element={<Comments />}></Route>
       <Route path="/makewish" element={<MakeWishes />}></Route>
-      <Route
-        path="/detail"
-        element={<SharePage userID="wttaPCWjRCeQBb67IKbMjMZ1UU72" />}
-      ></Route>
+      <Route path="/home/:userID" element={<SharePage />}></Route>
     </Routes>
   );
 }

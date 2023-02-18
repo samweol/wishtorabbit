@@ -10,6 +10,7 @@ export function UserContextrovider({ children }) {
     name: "",
     wid: "",
   });
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

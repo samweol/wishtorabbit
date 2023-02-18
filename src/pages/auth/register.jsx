@@ -3,11 +3,14 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import uuid from "react-uuid";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState(""); // email
   const [password, setPassword] = useState(""); // password
   const [username, setUsername] = useState(""); // username
+
+  const navigate = useNavigate();
 
   const onChange = (event) => {
     // email, password, username 입력창 상태 확인
@@ -39,6 +42,7 @@ const Register = () => {
           uid: data.user.uid,
           wid: uuid(),
         });
+        navigate("/");
       } catch (error) {
         console.error("Error adding document: ", error);
       }
