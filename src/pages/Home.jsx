@@ -12,7 +12,7 @@ import {
 } from "react-share";
 
 const Home = () => {
-  const { user } = useContext(UserContext);
+  //const { user } = useContext(UserContext);
   //define navigation
   const navigation = useNavigate();
 
@@ -24,10 +24,13 @@ const Home = () => {
     navigation("/makewish");
   };
 
-  console.log("USER: ", user); // user 확인
+  //console.log("USER: ", user); // user 확인
 
   //현재 화면 URL
-  const currentUrl = window.location.href;
+  let currentUrl = window.location.href;
+  //공유할 URL
+  //let shareUrl = currentUrl + `${user.uid}`;
+  let shareUrl = currentUrl + "wttaPCWjRCeQBb67IKbMjMZ1UU72";
 
   return (
     <div>
@@ -42,17 +45,17 @@ const Home = () => {
       {/*url share and social share*/}
       <div>
         <h3>공유하기</h3>
-        <FacebookShareButton url={currentUrl}>
+        <FacebookShareButton url={shareUrl}>
           <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
         </FacebookShareButton>
-        <TwitterShareButton url={currentUrl}>
+        <TwitterShareButton url={shareUrl}>
           <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
         </TwitterShareButton>
-        <EmailShareButton url={currentUrl}>
+        <EmailShareButton url={shareUrl}>
           <EmailIcon size={48} round={true} borderRadius={24}></EmailIcon>
         </EmailShareButton>
         <CopyToClipboard
-          text={currentUrl}
+          text={shareUrl}
           onCopy={(event) =>
             alert(`주소가 복사되었습니다.\n복사된 주소: ${event}`)
           }

@@ -5,12 +5,15 @@ import {
   Routes,
   Route,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
 
 import Auth from "./login/auth";
 import MakeWishes from "./makeWishes";
+
+import SharePage from "./linkShare/index";
 
 const AppRouter = ({ isLoggedIn }) => {
   return (
@@ -20,6 +23,10 @@ const AppRouter = ({ isLoggedIn }) => {
         <Route path="/auth" element={<Auth />}></Route>
         <Route path="/comments" element={<Comments />}></Route>
         <Route path="/makewish" element={<MakeWishes />}></Route>
+        <Route
+          path="/detail"
+          element={<SharePage userID="wttaPCWjRCeQBb67IKbMjMZ1UU72" />}
+        ></Route>
       </Routes>
     </Router>
   );
