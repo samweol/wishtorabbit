@@ -1,9 +1,10 @@
 import { React } from "react";
-import { Link } from "react-router-dom";
-import { authService, dbService } from "../../routes/firebase";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { useParams } from "react-router-dom";
+import { dbService } from "../../routes/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
-const SharePage = async ({ userID }) => {
+const SharePage = async ({ props }) => {
+  const userID = props.userID;
   let userName, userWish, userWishTime;
 
   //유저 아이디로 이름 찾기

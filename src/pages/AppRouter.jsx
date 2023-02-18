@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 import Comments from "./comment/comments";
 import Home from "./Home";
@@ -12,7 +13,12 @@ import Home from "./Home";
 import Auth from "./login/auth";
 import MakeWishes from "./makeWishes";
 
+import SharePage from "./linkShare/index";
+
 const AppRouter = ({ isLoggedIn }) => {
+  const params = useParams();
+  console.log("페이지 파라미터", params);
+
   return (
     <Router>
       <Routes>
@@ -20,6 +26,7 @@ const AppRouter = ({ isLoggedIn }) => {
         <Route path="/auth" element={<Auth />}></Route>
         <Route path="/comments" element={<Comments />}></Route>
         <Route path="/makewish" element={<MakeWishes />}></Route>
+        <Route path="/:uid" element={<SharePage userID={params} />}></Route>
       </Routes>
     </Router>
   );
