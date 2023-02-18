@@ -7,6 +7,7 @@ import Auth from "./auth";
 import LogIn from "./auth/login";
 import Register from "./auth/register";
 import MakeWishes from "./makeWishes";
+import SharePage from "./linkShare/index";
 import { UserContext } from "../context/UserContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
@@ -67,6 +68,10 @@ function App() {
       <Route path="/register" element={<Register />}></Route>
       <Route path="/comments" element={<Comments />}></Route>
       <Route path="/makewish" element={<MakeWishes />}></Route>
+      <Route
+        path="/detail"
+        element={<SharePage userID="wttaPCWjRCeQBb67IKbMjMZ1UU72" />}
+      ></Route>
     </Routes>
   );
 }

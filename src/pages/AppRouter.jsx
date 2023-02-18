@@ -16,9 +16,6 @@ import MakeWishes from "./makeWishes";
 import SharePage from "./linkShare/index";
 
 const AppRouter = ({ isLoggedIn }) => {
-  const params = useParams();
-  console.log("페이지 파라미터", params);
-
   return (
     <Router>
       <Routes>
@@ -26,7 +23,10 @@ const AppRouter = ({ isLoggedIn }) => {
         <Route path="/auth" element={<Auth />}></Route>
         <Route path="/comments" element={<Comments />}></Route>
         <Route path="/makewish" element={<MakeWishes />}></Route>
-        <Route path="/:uid" element={<SharePage userID={params} />}></Route>
+        <Route
+          path="/detail"
+          element={<SharePage userID="wttaPCWjRCeQBb67IKbMjMZ1UU72" />}
+        ></Route>
       </Routes>
     </Router>
   );

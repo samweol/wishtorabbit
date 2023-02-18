@@ -12,7 +12,7 @@ import {
 } from "react-share";
 
 const Home = () => {
-  const { user } = useContext(UserContext);
+  //const { user } = useContext(UserContext);
   //define navigation
   const navigation = useNavigate();
 
@@ -24,12 +24,13 @@ const Home = () => {
     navigation("/makewish");
   };
 
-  console.log("USER: ", user); // user 확인
+  //console.log("USER: ", user); // user 확인
 
   //현재 화면 URL
   let currentUrl = window.location.href;
   //공유할 URL
-  let shareUrl = currentUrl + `${user.uid}`;
+  //let shareUrl = currentUrl + `${user.uid}`;
+  let shareUrl = currentUrl + "wttaPCWjRCeQBb67IKbMjMZ1UU72";
 
   return (
     <div>
