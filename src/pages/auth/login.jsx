@@ -1,10 +1,20 @@
 import { authService } from "../../routes/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const [email, setEmail] = useState(""); // email
   const [password, setPassword] = useState(""); // password
+
+  const navigate = useNavigate();
+
+  //이미 로그인한 사용자는 홈으로 바로 이동하게끔
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) navigate("/home");
+    });
+  }, []);
 
   const onChange = (event) => {
     // email, password, username 입력창 상태 확인
@@ -27,8 +37,8 @@ const LogIn = () => {
         email,
         password
       );
-
       console.log(data);
+      navigate("/home");
     } catch (error) {
       console.log(error.message);
     }
