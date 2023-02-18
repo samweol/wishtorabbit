@@ -14,6 +14,9 @@ import { authService, dbService } from "../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 const Home = () => {
+  //define navigation
+  const navigation = useNavigate();
+
   //다시 fetch하므로 새로고침하면 userContext 다시 저장 됨
   //파이어베이스가 새로고침해도 유저 정보를 안잃는다고 했는데..
   //왜 새로고침하고서 fetchUser 다시 안하면 userContext 에 빈 값이 들어가는지 모르겠네 ㅠ
@@ -45,14 +48,15 @@ const Home = () => {
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      setUser(user);
-      setUserId(user.uid);
-      fetchUser();
+      if (user) {
+        setUser(user);
+        setUserId(user.uid);
+        fetchUser();
+      } else {
+        navigation("/");
+      }
     });
   }, []);
-
-  //define navigation
-  const navigation = useNavigate();
 
   //navigate to Comments page
   const homeToComments = () => {

@@ -32,7 +32,6 @@ const SharePage = () => {
     findWish.forEach((doc) => {
       setUserWish(doc.data().content);
     });
-    console.log(userName, userWish);
   };
 
   useEffect(() => {
@@ -54,15 +53,24 @@ const SharePage = () => {
       </div>
     );
   } else {
-    return (
-      <div>
-        <h1>{userName}의 소원</h1>
-        <span>{userWish}</span>
-        <button onClick={() => navigate("/comments")}>
-          댓글 달아서 응원해주기
-        </button>
-      </div>
-    );
+    if (userWish.length === 0) {
+      return (
+        <div>
+          <h1>{userName}의 소원</h1>
+          <span>{userName}님은 아직 적은 소원이 없어요🥲</span>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h1>{userName}의 소원</h1>
+          <span>{userWish}</span>
+          <button onClick={() => navigate("/comments")}>
+            댓글 달아서 응원해주기
+          </button>
+        </div>
+      );
+    }
   }
 };
 
