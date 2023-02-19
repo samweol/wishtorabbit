@@ -52,6 +52,12 @@ const SharePage = () => {
         <h1>유저 정보 불러오는 중...</h1>
       </div>
     );
+  } else if (userName.length === 0) {
+    return (
+      <div>
+        <h1>유저를 찾을 수 없어요🥲</h1>
+      </div>
+    );
   } else {
     if (userWish.length === 0) {
       return (
