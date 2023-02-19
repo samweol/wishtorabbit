@@ -62,8 +62,6 @@ const LogIn = () => {
           value={password}
           onChange={onChange}
         />
-
-        {/* newAccount 값이 ture이면 회원가입 버튼, 아니라면 로그인 버튼 */}
         <input type="submit" value="Log In" />
       </form>
     </div>

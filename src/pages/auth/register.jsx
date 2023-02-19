@@ -74,11 +74,10 @@ const Register = () => {
         <input
           name="username"
           type="text"
-          placeholder="username"
+          placeholder="Username"
           value={username}
           onChange={onChange}
         />
-        {/* newAccount 값이 ture이면 회원가입 버튼, 아니라면 로그인 버튼 */}
         <input type="submit" value="Create Account" />
       </form>
     </div>
