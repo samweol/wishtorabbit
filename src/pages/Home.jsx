@@ -22,7 +22,12 @@ const Home = () => {
   //왜 새로고침하고서 fetchUser 다시 안하면 userContext 에 빈 값이 들어가는지 모르겠네 ㅠ
   //그래서 fetchUser 코드 여기다가도 넣어놨어!
   const { user, setUser } = useContext(UserContext); //user정보 전역 저장
+
   const [userId, setUserId] = useState("");
+  const [wish, setWish] = useState({});
+
+  const current = new Date().getMonth() + 1;
+  const flag = Object.keys(wish).length == 0;
 
   const fetchUser = async () => {
     try {
@@ -46,6 +51,32 @@ const Home = () => {
     }
   };
 
+  const fetchWish = async () => {
+    try {
+      const q = query(
+        collection(dbService, "wish"),
+        where("uid", "==", userId)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const dataMonth = new Date(data.createdAt.toDate()).getMonth() + 1;
+        if (dataMonth === current) {
+          // 가져온 데이터의 소원 달과 현재 달이 같을 때
+          console.log("소원이 있는 경우");
+          setWish(data);
+        } else {
+          // 가져온 데이터의 소원 달과 현재 달이 다를 때
+          console.log("소원이 있지만 다른 달인 경우");
+          setWish({});
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+    }
+  };
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
@@ -57,6 +88,10 @@ const Home = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    fetchWish();
+  }, [user]);
 
   //navigate to Comments page
   const homeToComments = () => {
@@ -74,8 +109,15 @@ const Home = () => {
   return (
     <div>
       <div>
+        <h1>{`${current}월달의 소원`}</h1>
+        {wish.content ? <p>{wish.content}</p> : null}
+      </div>
+      <div>
         {/*makeWish button*/}
-        <button onClick={navigateToMakeWish}>나만의 소원 달 만들기</button>
+        {flag ? (
+          <button onClick={navigateToMakeWish}>나만의 소원 달 만들기</button>
+        ) : null}
+
         {/*mortar button*/}
         <button onClick={homeToComments} className="mortarBtn">
           코멘트 달아주기
