@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../../routes/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { UserContext } from "../../context/UserContext";
 
 export default function MakeWishes() {
+  const { user } = useContext(UserContext);
   const [wish, setWish] = useState("");
   const navigate = useNavigate();
+
+  const uid = user.uid;
+
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
       await addDoc(collection(dbService, "wish"), {
         content: wish,
         createdAt: new Date(),
-        uid: "1",
+        uid: uid,
       });
       navigate("/");
     } catch (err) {
