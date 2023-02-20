@@ -12,6 +12,8 @@ import {
 } from "react-share";
 import { authService, dbService } from "../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { LoaderContext } from "../context/LoaderContext";
+import Loader from "../loader/Loader";
 
 const Home = () => {
   //define navigation
@@ -22,6 +24,7 @@ const Home = () => {
   //왜 새로고침하고서 fetchUser 다시 안하면 userContext 에 빈 값이 들어가는지 모르겠네 ㅠ
   //그래서 fetchUser 코드 여기다가도 넣어놨어!
   const { user, setUser } = useContext(UserContext); //user정보 전역 저장
+  const { isLoading, setLoading } = useContext(LoaderContext);
 
   const [userId, setUserId] = useState("");
   const [wish, setWish] = useState({});
@@ -52,6 +55,7 @@ const Home = () => {
   };
 
   const fetchWish = async () => {
+    setLoading(true);
     try {
       const q = query(
         collection(dbService, "wish"),
@@ -74,6 +78,7 @@ const Home = () => {
     } catch (err) {
       console.error(err);
     } finally {
+      setLoading(false);
     }
   };
 
@@ -106,6 +111,8 @@ const Home = () => {
   //공유할 URL
   let shareUrl = currentUrl + `/${user.uid}`;
 
+  if (isLoading)
+    return <Loader type="spin" color="RGB 값" message={"로딩중입니다."} />;
   return (
     <div>
       <div>
