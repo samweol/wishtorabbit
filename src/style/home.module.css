@@ -18,6 +18,8 @@
   font-family: "SaenggeoJincheon";
   text-align: center;
   color: white;
+  padding: 24px 0;
+  font-size: 1.4rem;
 }
 
 .wish {
@@ -35,4 +37,10 @@
   position: absolute;
   bottom: 0;
   width: 100vw;
+}
+
+.text {
+  font-family: "SaenggeoJincheon";
+  text-align: center;
+  color: white;
 }
