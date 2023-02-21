@@ -1,0 +1,38 @@
+@font-face {
+  font-family: "SaenggeoJincheon";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/SaenggeoJincheon.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.container {
+  height: 100vh;
+  background-image: url("/public/images/main_background_night_sky.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.title {
+  font-family: "SaenggeoJincheon";
+  text-align: center;
+  color: white;
+}
+
+.wish {
+  text-align: center;
+  color: white;
+}
+
+.shareBtn {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.moon {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+}

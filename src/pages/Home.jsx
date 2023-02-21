@@ -14,6 +14,8 @@ import { authService, dbService } from "../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { LoaderContext } from "../context/LoaderContext";
 import Loader from "../loader/Loader";
+import "../style/reset.css";
+import styles from "../style/home.module.css";
 
 const Home = () => {
   //define navigation
@@ -114,10 +116,13 @@ const Home = () => {
   if (isLoading)
     return <Loader type="spin" color="RGB 값" message={"로딩중입니다."} />;
   return (
-    <div>
+    <div className={styles.container}>
       <div>
-        <h1>{`${current}월달의 소원`}</h1>
-        {wish.content ? <p>{wish.content}</p> : null}
+        <h1 className={styles.title}>{`${current}월달의 소원`}</h1>
+        <h1 className={styles.title}>{`${user.name}님의 달`}</h1>
+        {wish.content ? (
+          <div className={styles.wish}>{wish.content}</div>
+        ) : null}
       </div>
       <div>
         {/*makeWish button*/}
@@ -131,8 +136,8 @@ const Home = () => {
         </button>
       </div>
       {/*url share and social share*/}
-      <div>
-        <h3>공유하기</h3>
+      <h3 className={styles.title}>공유하기</h3>
+      <div className={styles.shareBtn}>
         <FacebookShareButton url={shareUrl}>
           <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
         </FacebookShareButton>
@@ -151,6 +156,7 @@ const Home = () => {
           <button>URL</button>
         </CopyToClipboard>
       </div>
+      <img className={styles.moon} src="/images/moon.png" alt="달 사진" />
     </div>
   );
 };
