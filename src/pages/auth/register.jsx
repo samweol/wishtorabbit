@@ -46,8 +46,6 @@ const Register = () => {
       } catch (error) {
         console.error("Error adding document: ", error);
       }
-
-      console.log(data);
     } catch (error) {
       console.log(error.message);
     }

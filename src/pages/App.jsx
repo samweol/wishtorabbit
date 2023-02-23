@@ -13,15 +13,17 @@ import SharePage from "./linkShare/index";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Auth />}></Route>
-      <Route path="/home" element={<Home />}></Route>
-      <Route path="/login" element={<LogIn />}></Route>
-      <Route path="/register" element={<Register />}></Route>
-      <Route path="/comments" element={<Comments />}></Route>
-      <Route path="/makewish" element={<MakeWishes />}></Route>
-      <Route path="/home/:userID" element={<SharePage />}></Route>
-    </Routes>
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Auth />}></Route>
+        <Route path="/home" element={<Home />}></Route>
+        <Route path="/login" element={<LogIn />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/comments" element={<Comments />}></Route>
+        <Route path="/makewish" element={<MakeWishes />}></Route>
+        <Route path="/home/:userID" element={<SharePage />}></Route>
+      </Routes>
+    </div>
   );
 }
 
