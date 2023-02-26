@@ -21,11 +21,8 @@ const Home = () => {
   //define navigation
   const navigation = useNavigate();
 
-  //다시 fetch하므로 새로고침하면 userContext 다시 저장 됨
-  //파이어베이스가 새로고침해도 유저 정보를 안잃는다고 했는데..
-  //왜 새로고침하고서 fetchUser 다시 안하면 userContext 에 빈 값이 들어가는지 모르겠네 ㅠ
-  //그래서 fetchUser 코드 여기다가도 넣어놨어!
   const { user, setUser } = useContext(UserContext); //user정보 전역 저장
+
   const { isLoading, setLoading } = useContext(LoaderContext);
 
   const [userId, setUserId] = useState("");
@@ -33,28 +30,6 @@ const Home = () => {
 
   const current = new Date().getMonth() + 1;
   const flag = Object.keys(wish).length == 0;
-
-  const fetchUser = async () => {
-    try {
-      const q = query(
-        collection(dbService, "user"),
-        where("uid", "==", userId) // uid로 특정 user 가져오기
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        setUser({
-          uid: data.uid,
-          email: data.email,
-          name: data.name,
-          password: data.password,
-          wid: data.wid,
-        });
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const fetchWish = async () => {
     setLoading(true);
@@ -84,12 +59,23 @@ const Home = () => {
     }
   };
 
+  const logOut = () => {
+    authService
+      .signOut()
+      .then(function () {
+        setUser(null);
+        navigation("/");
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setUser(user);
         setUserId(user.uid);
-        fetchUser();
+        //fetchUser();
       } else {
         navigation("/");
       }
@@ -157,6 +143,7 @@ const Home = () => {
         </CopyToClipboard>
       </div>
       <img className={styles.moon} src="/images/moon.png" alt="달 사진" />
+      <button onClick={logOut}>로그아웃</button>
     </div>
   );
 };

@@ -37,8 +37,7 @@ const LogIn = () => {
         email,
         password
       );
-      console.log(data);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log(error.message);
     }
