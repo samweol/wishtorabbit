@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dbService } from "../../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { type } from "@testing-library/user-event/dist/type";
 
 const SharePage = () => {
   const userID = useParams().userID;
@@ -41,19 +42,7 @@ const SharePage = () => {
       where("uid", "==", userID)
     );
     const findComments = await getDocs(findCommentsQuery);
-    setComments(findComments.docs);
-    /*findComments.docs.map((items) => console.log(items.data()));
-
-    findComments.forEach((doc) => {
-      comments.push({
-        cid: doc.data().cid, //댓글아이디
-        content: doc.data().content.content, //댓글내용
-        createdAt: Date(doc.data().createdAt).toString(), //댓글 작성 시각
-        sender: doc.data().sender.sender, //보내는 사람
-        selectedType: doc.data().type.selectTypes, //재료
-      });
-    });
-    console.log("getdata 이후 comments", comments.length);*/
+    setComments(findComments.docs); //comments에 저장
   };
 
   useEffect(() => {
@@ -96,16 +85,22 @@ const SharePage = () => {
           <hr />
           <div>
             {comments.map((item) => {
-              return (
-                <div key={item.data().cid}>
-                  <div>
-                    {item.data().sender.sender}: {item.data().content.content} (
-                    {item.data().type.selectTypes})
+              let commentMonth =
+                new Date(item.data().createdAt.toMillis()).getMonth() + 1;
+              let nowMonth = new Date().getMonth() + 1;
+
+              if (commentMonth === nowMonth) {
+                return (
+                  <div key={item.data().cid}>
+                    <div>
+                      {item.data().sender.sender}: {item.data().content.content}{" "}
+                      ({item.data().type.selectTypes})
+                    </div>
+                    <div>{Date(item.data().createdAt).toString()} </div>
+                    <hr />
                   </div>
-                  <div>{Date(item.data().createdAt).toString()} </div>
-                  <hr />
-                </div>
-              );
+                );
+              }
             })}
           </div>
           <button onClick={() => navigate(`/comments/${userID}`)}>
