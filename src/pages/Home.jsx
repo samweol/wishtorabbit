@@ -30,10 +30,12 @@ const Home = () => {
 
   const current = new Date().getMonth() + 1;
   const flag = Object.keys(wish).length == 0;
+  console.log(current);
 
   const fetchWish = async () => {
     setLoading(true);
     try {
+      let tempData = {};
       const q = query(
         collection(dbService, "wish"),
         where("uid", "==", userId)
@@ -43,14 +45,10 @@ const Home = () => {
         const data = doc.data();
         const dataMonth = new Date(data.createdAt.toDate()).getMonth() + 1;
         if (dataMonth === current) {
-          // 가져온 데이터의 소원 달과 현재 달이 같을 때
+          tempData = data;
           console.log("소원이 있는 경우");
-          setWish(data);
-        } else {
-          // 가져온 데이터의 소원 달과 현재 달이 다를 때
-          console.log("소원이 있지만 다른 달인 경우");
-          setWish({});
         }
+        setWish(tempData);
       });
     } catch (err) {
       console.error(err);
