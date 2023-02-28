@@ -90,6 +90,7 @@ const SharePage = () => {
         <div>
           <h1>{userName}의 소원</h1>
           <h2>{userWish}</h2>
+          <hr />
           <div>
             {comments.map((item) => {
               return (
