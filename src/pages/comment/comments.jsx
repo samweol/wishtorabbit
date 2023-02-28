@@ -44,7 +44,7 @@ const Comments = () => {
         //wid: { wid }, //소원 아이디
       });
       console.log("comment DB에 저장되었습니다. 문서 아이디: ", docRef.id);
-      navigate("/");
+      navigate(`/home/${userID}`);
     } catch (err) {
       console.error(err);
     }
