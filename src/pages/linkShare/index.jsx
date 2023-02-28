@@ -85,22 +85,16 @@ const SharePage = () => {
           <hr />
           <div>
             {comments.map((item) => {
-              let commentMonth =
-                new Date(item.data().createdAt.toMillis()).getMonth() + 1;
-              let nowMonth = new Date().getMonth() + 1;
-
-              if (commentMonth === nowMonth) {
-                return (
-                  <div key={item.data().cid}>
-                    <div>
-                      {item.data().sender.sender}: {item.data().content.content}{" "}
-                      ({item.data().type.selectTypes})
-                    </div>
-                    <div>{Date(item.data().createdAt).toString()} </div>
-                    <hr />
+              return (
+                <div key={item.data().cid}>
+                  <div>
+                    {item.data().sender.sender}: {item.data().content.content} (
+                    {item.data().type.selectTypes})
                   </div>
-                );
-              }
+                  <div>{Date(item.data().createdAt).toString()} </div>
+                  <hr />
+                </div>
+              );
             })}
           </div>
           <button onClick={() => navigate(`/comments/${userID}`)}>
