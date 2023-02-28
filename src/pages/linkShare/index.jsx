@@ -71,7 +71,7 @@ const SharePage = () => {
         <div>
           <h1>{userName}의 소원</h1>
           <span>{userWish}</span>
-          <button onClick={() => navigate("/comments")}>
+          <button onClick={() => navigate(`/comments/${userID}`)}>
             댓글 달아서 응원해주기
           </button>
         </div>
