@@ -11,6 +11,7 @@ const SharePage = () => {
 
   const [noComments, setNoComments] = useState(true);
   const [months, setMonths] = useState([]);
+  const [clickedMonth, setClickedMonth] = useState(0);
 
   const navigate = useNavigate();
 
@@ -106,12 +107,6 @@ const SharePage = () => {
         <div>
           <h1>{userName}의 소원</h1>
           <h2>{userWish}</h2>
-          <hr />
-          <div>
-            {months.map((num) => {
-              return <button key={num}>{num}</button>;
-            })}
-          </div>
           <hr />
           <div>
             {comments.map((item) => {
