@@ -2,11 +2,13 @@ import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dbService } from "../../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { type } from "@testing-library/user-event/dist/type";
 
 const SharePage = () => {
   const userID = useParams().userID;
   const [userName, setUserName] = useState("");
   const [userWish, setUserWish] = useState("");
+  const [comments, setComments] = useState([]);
 
   const navigate = useNavigate();
 
@@ -32,6 +34,15 @@ const SharePage = () => {
     findWish.forEach((doc) => {
       setUserWish(doc.data().content);
     });
+
+    //유저 아이디로 코멘트 찾기
+    const findCommentsQuery = query(
+      //인자로 받은 유저아이디를 이용한 유저 코멘트 찾는 쿼리 작성
+      collection(dbService, "comment"),
+      where("uid", "==", userID)
+    );
+    const findComments = await getDocs(findCommentsQuery);
+    setComments(findComments.docs); //comments에 저장
   };
 
   useEffect(() => {
@@ -43,7 +54,7 @@ const SharePage = () => {
   const reRender = () => {
     setTimeout(() => {
       setInit(true);
-    }, 2000);
+    }, 1000);
   };
 
   if (init === false) {
@@ -70,8 +81,23 @@ const SharePage = () => {
       return (
         <div>
           <h1>{userName}의 소원</h1>
-          <span>{userWish}</span>
-          <button onClick={() => navigate("/comments")}>
+          <h2>{userWish}</h2>
+          <hr />
+          <div>
+            {comments.map((item) => {
+              return (
+                <div key={item.data().cid}>
+                  <div>
+                    {item.data().sender.sender}: {item.data().content.content} (
+                    {item.data().type.selectTypes})
+                  </div>
+                  <div>{Date(item.data().createdAt).toString()} </div>
+                  <hr />
+                </div>
+              );
+            })}
+          </div>
+          <button onClick={() => navigate(`/comments/${userID}`)}>
             댓글 달아서 응원해주기
           </button>
         </div>
