@@ -2,13 +2,15 @@ import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dbService } from "../../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { type } from "@testing-library/user-event/dist/type";
 
 const SharePage = () => {
   const userID = useParams().userID;
   const [userName, setUserName] = useState("");
   const [userWish, setUserWish] = useState("");
   const [comments, setComments] = useState([]);
+
+  const [noComments, setNoComments] = useState(true);
+  const [months, setMonths] = useState([]);
 
   const navigate = useNavigate();
 
@@ -45,10 +47,32 @@ const SharePage = () => {
     setComments(findComments.docs); //comments에 저장
   };
 
+  const checkComments = () => {
+    //소원이 있는 달 체크하기
+    if (comments.length === 0) setNoComments(true);
+    else {
+      setNoComments(false);
+      comments.map((item) => {
+        let commentMonth = new Date(
+          item.data().createdAt.toMillis()
+        ).getMonth();
+        if (months.includes(commentMonth) === false) {
+          setMonths(months.push(commentMonth));
+          setMonths(months.sort());
+        }
+      });
+    }
+  };
+
   useEffect(() => {
     reRender();
     getData();
   }, []);
+
+  useEffect(() => {
+    checkComments();
+    console.log(months);
+  }, [comments]);
 
   const [init, setInit] = useState(false);
   const reRender = () => {
