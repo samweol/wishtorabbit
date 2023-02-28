@@ -108,6 +108,12 @@ const SharePage = () => {
           <h2>{userWish}</h2>
           <hr />
           <div>
+            {months.map((num) => {
+              return <button key={num}>{num}</button>;
+            })}
+          </div>
+          <hr />
+          <div>
             {comments.map((item) => {
               return (
                 <div key={item.data().cid}>
