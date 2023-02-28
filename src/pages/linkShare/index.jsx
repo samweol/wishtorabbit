@@ -41,6 +41,9 @@ const SharePage = () => {
       where("uid", "==", userID)
     );
     const findComments = await getDocs(findCommentsQuery);
+    setComments(findComments.docs);
+    /*findComments.docs.map((items) => console.log(items.data()));
+
     findComments.forEach((doc) => {
       comments.push({
         cid: doc.data().cid, //댓글아이디
@@ -50,7 +53,7 @@ const SharePage = () => {
         selectedType: doc.data().type.selectTypes, //재료
       });
     });
-    console.log("getdata 이후 comments", comments.length);
+    console.log("getdata 이후 comments", comments.length);*/
   };
 
   useEffect(() => {
@@ -62,7 +65,7 @@ const SharePage = () => {
   const reRender = () => {
     setTimeout(() => {
       setInit(true);
-    }, 2500);
+    }, 1000);
   };
 
   if (init === false) {
@@ -94,11 +97,13 @@ const SharePage = () => {
           <div>
             {comments.map((item) => {
               return (
-                <div key={item.cid}>
-                  <span>작성자: {item.sender}</span>
-                  <span>내용: {item.content}</span>
-                  <span>재료: {item.selectTypes}</span>
-                  <span>작성시간: {item.createdAt}</span>
+                <div key={item.data().cid}>
+                  <div>
+                    {item.data().sender.sender}: {item.data().content.content} (
+                    {item.data().type.selectTypes})
+                  </div>
+                  <div>{Date(item.data().createdAt).toString()} </div>
+                  <hr />
                 </div>
               );
             })}
