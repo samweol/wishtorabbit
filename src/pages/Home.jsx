@@ -30,7 +30,6 @@ const Home = () => {
 
   const current = new Date().getMonth() + 1;
   const flag = Object.keys(wish).length == 0;
-  console.log(current);
 
   const fetchWish = async () => {
     setLoading(true);
@@ -73,7 +72,6 @@ const Home = () => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setUserId(user.uid);
-        //fetchUser();
       } else {
         navigation("/");
       }
