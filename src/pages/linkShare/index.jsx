@@ -7,6 +7,7 @@ const SharePage = () => {
   const userID = useParams().userID;
   const [userName, setUserName] = useState("");
   const [userWish, setUserWish] = useState("");
+  const [comments, setComments] = useState([]);
 
   const navigate = useNavigate();
 
@@ -32,6 +33,24 @@ const SharePage = () => {
     findWish.forEach((doc) => {
       setUserWish(doc.data().content);
     });
+
+    //유저 아이디로 코멘트 찾기
+    const findCommentsQuery = query(
+      //인자로 받은 유저아이디를 이용한 유저 코멘트 찾는 쿼리 작성
+      collection(dbService, "comment"),
+      where("uid", "==", userID)
+    );
+    const findComments = await getDocs(findCommentsQuery);
+    findComments.forEach((doc) => {
+      comments.push({
+        cid: doc.data().cid, //댓글아이디
+        content: doc.data().content.content, //댓글내용
+        createdAt: Date(doc.data().createdAt).toString(), //댓글 작성 시각
+        sender: doc.data().sender.sender, //보내는 사람
+        selectedType: doc.data().type.selectTypes, //재료
+      });
+    });
+    console.log("getdata 이후 comments", comments.length);
   };
 
   useEffect(() => {
@@ -43,7 +62,7 @@ const SharePage = () => {
   const reRender = () => {
     setTimeout(() => {
       setInit(true);
-    }, 2000);
+    }, 2500);
   };
 
   if (init === false) {
@@ -70,7 +89,19 @@ const SharePage = () => {
       return (
         <div>
           <h1>{userName}의 소원</h1>
-          <span>{userWish}</span>
+          <h2>{userWish}</h2>
+          <div>
+            {comments.map((item) => {
+              return (
+                <div key={item.cid}>
+                  <span>작성자: {item.sender}</span>
+                  <span>내용: {item.content}</span>
+                  <span>재료: {item.selectTypes}</span>
+                  <span>작성시간: {item.createdAt}</span>
+                </div>
+              );
+            })}
+          </div>
           <button onClick={() => navigate(`/comments/${userID}`)}>
             댓글 달아서 응원해주기
           </button>
