@@ -2,13 +2,18 @@ import { React, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dbService } from "../../routes/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { type } from "@testing-library/user-event/dist/type";
+import { click } from "@testing-library/user-event/dist/click";
 
 const SharePage = () => {
   const userID = useParams().userID;
-  const [userName, setUserName] = useState("");
-  const [userWish, setUserWish] = useState("");
-  const [comments, setComments] = useState([]);
+  const [userName, setUserName] = useState(""); //유저이름
+  const [userWish, setUserWish] = useState(""); //유저소원
+  const [comments, setComments] = useState([]); //유저가 받은 코멘트들
+  const [noComments, setNoComments] = useState(true); //이번달에 받은 코멘트가 없는지 있는지
+  const [months, setMonths] = useState([]); //달별로 코멘트 정리
+  const [clickedMonth, setClickedMonth] = useState(0); //어떤 달이 클릭됐는지
+  const [clickedComments, setClickedComments] = useState([]); //클릭된 달의 코멘트
+  const [clickedWish, setClickedWish] = useState(""); //클릭된 달의 소원
 
   const navigate = useNavigate();
 
@@ -32,7 +37,18 @@ const SharePage = () => {
     );
     const findWish = await getDocs(findWishQuery); //쿼리 이용하여 유저 소원 찾기
     findWish.forEach((doc) => {
-      setUserWish(doc.data().content);
+      let wishMonth = new Date(doc.data().createdAt.toMillis()).getMonth();
+      let currentMonth = new Date().getMonth();
+      if (wishMonth === currentMonth) {
+        setUserWish(doc.data().content);
+      } else {
+        setUserWish("");
+      }
+      setMonths((months) => [
+        { month: wishMonth, wishContent: doc.data().content, comments: [] },
+        ...months,
+      ]);
+      //달과 소원 추가하기
     });
 
     //유저 아이디로 코멘트 찾기
@@ -45,10 +61,35 @@ const SharePage = () => {
     setComments(findComments.docs); //comments에 저장
   };
 
+  //월별 코멘트 저장
+  const checkComments = () => {
+    for (let i = 0; i < comments.length; i++) {
+      let cm = new Date(comments[i].data().createdAt.toMillis()).getMonth();
+      for (let j = 0; j < months.length; j++) {
+        let wm = months[j].month;
+        if (cm === wm) {
+          months[j].comments.push({
+            key: comments[i].data().cid,
+            sender: comments[i].data().sender.sender,
+            content: comments[i].data().content.content,
+            selectedType: comments[i].data().type.selectTypes,
+            createdAt: new Date(
+              comments[i].data().createdAt.toMillis()
+            ).toString(),
+          });
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     reRender();
     getData();
   }, []);
+
+  useEffect(() => {
+    checkComments();
+  }, [comments]);
 
   const [init, setInit] = useState(false);
   const reRender = () => {
@@ -56,6 +97,29 @@ const SharePage = () => {
       setInit(true);
     }, 1000);
   };
+
+  const monthBtnClicked = (event) => {
+    setClickedMonth((prev) => event.target.value);
+  };
+
+  useEffect(() => {
+    for (let i = 0; i < months.length; i++) {
+      if (months[i].month == clickedMonth) {
+        setClickedComments(months[i].comments);
+      }
+    }
+  }, [clickedMonth]);
+
+  useEffect(() => {
+    for (let i = 0; i < months.length; i++) {
+      if (months[i].month == clickedMonth) {
+        let cm = new Date().getMonth();
+        if (clickedMonth != cm) {
+          setClickedWish(months[i].wishContent);
+        } else setClickedWish("");
+      }
+    }
+  }, [clickedComments]);
 
   if (init === false) {
     return (
@@ -73,8 +137,40 @@ const SharePage = () => {
     if (userWish.length === 0) {
       return (
         <div>
-          <h1>{userName}의 소원</h1>
-          <span>{userName}님은 아직 적은 소원이 없어요🥲</span>
+          <div>
+            <h1>{userName}의 소원</h1>
+            <span>{userName}님은 아직 이번달에 적은 소원이 없어요🥲</span>
+          </div>
+          <hr />
+          <div>
+            {months.map((item) => {
+              if (item.comments.length != 0) {
+                return (
+                  <button
+                    key={item.month}
+                    value={item.month}
+                    onClick={monthBtnClicked}
+                  >
+                    {item.month + 1}월의 떡
+                  </button>
+                );
+              }
+            })}
+          </div>
+          <div>{clickedWish}</div>
+          <div>
+            {clickedComments.map((item) => {
+              return (
+                <div key={item.key}>
+                  <div>
+                    {item.sender}: {item.content}({item.selectedType})
+                  </div>
+                  <div>{item.createdAt}</div>
+                </div>
+              );
+            })}
+          </div>
+          <hr />
         </div>
       );
     } else {
@@ -84,19 +180,34 @@ const SharePage = () => {
           <h2>{userWish}</h2>
           <hr />
           <div>
-            {comments.map((item) => {
+            {months.map((item) => {
+              if (item.comments.length != 0) {
+                return (
+                  <button
+                    key={item.month}
+                    value={item.month}
+                    onClick={monthBtnClicked}
+                  >
+                    {item.month + 1}월의 떡
+                  </button>
+                );
+              }
+            })}
+          </div>
+          <div>{clickedWish}</div>
+          <div>
+            {clickedComments.map((item) => {
               return (
-                <div key={item.data().cid}>
+                <div key={item.key}>
                   <div>
-                    {item.data().sender.sender}: {item.data().content.content} (
-                    {item.data().type.selectTypes})
+                    {item.sender}: {item.content}({item.selectedType})
                   </div>
-                  <div>{Date(item.data().createdAt).toString()} </div>
-                  <hr />
+                  <div>{item.createdAt}</div>
                 </div>
               );
             })}
           </div>
+          <hr />
           <button onClick={() => navigate(`/comments/${userID}`)}>
             댓글 달아서 응원해주기
           </button>
