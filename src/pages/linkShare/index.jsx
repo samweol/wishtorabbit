@@ -12,7 +12,8 @@ const SharePage = () => {
   const [noComments, setNoComments] = useState(true); //이번달에 받은 코멘트가 없는지 있는지
   const [months, setMonths] = useState([]); //달별로 코멘트 정리
   const [clickedMonth, setClickedMonth] = useState(0); //어떤 달이 클릭됐는지
-  const [clickedComments, setClickedComments] = useState([]);
+  const [clickedComments, setClickedComments] = useState([]); //클릭된 달의 코멘트
+  const [clickedWish, setClickedWish] = useState(""); //클릭된 달의 소원
 
   const navigate = useNavigate();
 
@@ -99,11 +100,27 @@ const SharePage = () => {
 
   const monthBtnClicked = (event) => {
     setClickedMonth((prev) => event.target.value);
-    for (let i = 0; i < months.length; i++) {
-      if (months[i].month == clickedMonth)
-        setClickedComments(months[i].comments);
-    }
   };
+
+  useEffect(() => {
+    for (let i = 0; i < months.length; i++) {
+      if (months[i].month == clickedMonth) {
+        setClickedComments(months[i].comments);
+      }
+    }
+  }, [clickedMonth]);
+
+  useEffect(() => {
+    for (let i = 0; i < months.length; i++) {
+      if (months[i].month == clickedMonth) {
+        let cm = new Date().getMonth();
+        console.log(clickedMonth, cm);
+        if (clickedMonth != cm) {
+          setClickedWish(months[i].wishContent);
+        } else setClickedWish("");
+      }
+    }
+  }, [clickedComments]);
 
   if (init === false) {
     return (
@@ -139,6 +156,19 @@ const SharePage = () => {
               );
             })}
           </div>
+          <div>{clickedWish}</div>
+          <div>
+            {clickedComments.map((item) => {
+              return (
+                <div key={item.key}>
+                  <div>
+                    {item.sender}: {item.content}({item.selectedType})
+                  </div>
+                  <div>{item.createdAt}</div>
+                </div>
+              );
+            })}
+          </div>
           <hr />
         </div>
       );
@@ -161,7 +191,7 @@ const SharePage = () => {
               );
             })}
           </div>
-          <hr />
+          <div>{clickedWish}</div>
           <div>
             {clickedComments.map((item) => {
               return (
@@ -173,21 +203,8 @@ const SharePage = () => {
                 </div>
               );
             })}
-            {/*
-            {comments.map((item) => {
-              return (
-                <div key={item.data().cid}>
-                  <div>
-                    {item.data().sender.sender}: {item.data().content.content} (
-                    {item.data().type.selectTypes})
-                  </div>
-                  <div>{Date(item.data().createdAt).toString()} </div>
-                  <hr />
-                </div>
-              );
-            })}
-          */}
           </div>
+          <hr />
           <button onClick={() => navigate(`/comments/${userID}`)}>
             댓글 달아서 응원해주기
           </button>
