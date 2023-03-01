@@ -114,7 +114,6 @@ const SharePage = () => {
     for (let i = 0; i < months.length; i++) {
       if (months[i].month == clickedMonth) {
         let cm = new Date().getMonth();
-        console.log(clickedMonth, cm);
         if (clickedMonth != cm) {
           setClickedWish(months[i].wishContent);
         } else setClickedWish("");
@@ -145,15 +144,17 @@ const SharePage = () => {
           <hr />
           <div>
             {months.map((item) => {
-              return (
-                <button
-                  key={item.month}
-                  value={item.month}
-                  onClick={monthBtnClicked}
-                >
-                  {item.month + 1}월의 떡
-                </button>
-              );
+              if (item.comments.length != 0) {
+                return (
+                  <button
+                    key={item.month}
+                    value={item.month}
+                    onClick={monthBtnClicked}
+                  >
+                    {item.month + 1}월의 떡
+                  </button>
+                );
+              }
             })}
           </div>
           <div>{clickedWish}</div>
@@ -180,15 +181,17 @@ const SharePage = () => {
           <hr />
           <div>
             {months.map((item) => {
-              return (
-                <button
-                  key={item.month}
-                  value={item.month}
-                  onClick={monthBtnClicked}
-                >
-                  {item.month + 1}월의 떡
-                </button>
-              );
+              if (item.comments.length != 0) {
+                return (
+                  <button
+                    key={item.month}
+                    value={item.month}
+                    onClick={monthBtnClicked}
+                  >
+                    {item.month + 1}월의 떡
+                  </button>
+                );
+              }
             })}
           </div>
           <div>{clickedWish}</div>
