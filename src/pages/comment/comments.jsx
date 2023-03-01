@@ -23,15 +23,6 @@ const Comments = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    /*const user = authService.currentUser; //현재 유저 정보 불러오기
-    const q = query(
-      //지금은 임시 값인데, 나중에는 소원 클릭 시 클릭 이벤트로 소원 아이디 받아서 소원아이디 저장하기
-      collection(dbService, "wish"),
-      where("uid", "==", "999999")
-    );
-    const wish = await getDocs(q); //소원아이디로 문서 불러오기
-    let wid;
-    wish.forEach((doc) => (wid = doc.data().uid));*/
 
     try {
       const docRef = await addDoc(collection(dbService, "comment"), {
@@ -41,7 +32,6 @@ const Comments = () => {
         sender: { sender }, //보내는 사람
         createdAt: new Date(), //작성내용 저장 시간
         type: { selectTypes }, //댓글 작성자가 고른 재료
-        //wid: { wid }, //소원 아이디
       });
       console.log("comment DB에 저장되었습니다. 문서 아이디: ", docRef.id);
       navigate(`/home/${userID}`);

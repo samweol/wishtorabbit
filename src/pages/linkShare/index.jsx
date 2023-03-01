@@ -5,13 +5,12 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 const SharePage = () => {
   const userID = useParams().userID;
-  const [userName, setUserName] = useState("");
-  const [userWish, setUserWish] = useState("");
-  const [comments, setComments] = useState([]);
-
-  const [noComments, setNoComments] = useState(true);
-  const [months, setMonths] = useState([]);
-  const [clickedMonth, setClickedMonth] = useState(0);
+  const [userName, setUserName] = useState(""); //유저이름
+  const [userWish, setUserWish] = useState(""); //유저소원
+  const [comments, setComments] = useState([]); //유저가 받은 코멘트들
+  const [noComments, setNoComments] = useState(true); //이번달에 받은 코멘트가 없는지 있는지
+  const [months, setMonths] = useState([]); //달별로 코멘트 정리
+  const [clickedMonth, setClickedMonth] = useState(0); //어떤 달이 클릭됐는지
 
   const navigate = useNavigate();
 
@@ -35,7 +34,18 @@ const SharePage = () => {
     );
     const findWish = await getDocs(findWishQuery); //쿼리 이용하여 유저 소원 찾기
     findWish.forEach((doc) => {
-      setUserWish(doc.data().content);
+      let wishMonth = new Date(doc.data().createdAt.toMillis()).getMonth();
+      let currentMonth = new Date().getMonth();
+      if (wishMonth === currentMonth) {
+        setUserWish(doc.data().content);
+      } else {
+        setUserWish("");
+      }
+      setMonths((months) => [
+        { month: wishMonth, wishContent: doc.data().content, comments: [] },
+        ...months,
+      ]);
+      //달과 소원 추가하기
     });
 
     //유저 아이디로 코멘트 찾기
@@ -47,8 +57,7 @@ const SharePage = () => {
     const findComments = await getDocs(findCommentsQuery);
     setComments(findComments.docs); //comments에 저장
   };
-
-  const checkComments = () => {
+  /*const checkComments = () => {
     //소원이 있는 달 체크하기
     if (comments.length === 0) setNoComments(true);
     else {
@@ -63,17 +72,17 @@ const SharePage = () => {
         }
       });
     }
-  };
+  };*/
 
   useEffect(() => {
     reRender();
     getData();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     checkComments();
     console.log(months);
-  }, [comments]);
+  }, [comments]);*/
 
   const [init, setInit] = useState(false);
   const reRender = () => {
@@ -99,7 +108,7 @@ const SharePage = () => {
       return (
         <div>
           <h1>{userName}의 소원</h1>
-          <span>{userName}님은 아직 적은 소원이 없어요🥲</span>
+          <span>{userName}님은 아직 이번달에 적은 소원이 없어요🥲</span>
         </div>
       );
     } else {
@@ -109,6 +118,7 @@ const SharePage = () => {
           <h2>{userWish}</h2>
           <hr />
           <div>
+            {console.log(months)}
             {comments.map((item) => {
               return (
                 <div key={item.data().cid}>
