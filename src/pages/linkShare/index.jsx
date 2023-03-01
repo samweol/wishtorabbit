@@ -57,32 +57,34 @@ const SharePage = () => {
     const findComments = await getDocs(findCommentsQuery);
     setComments(findComments.docs); //comments에 저장
   };
-  /*const checkComments = () => {
-    //소원이 있는 달 체크하기
-    if (comments.length === 0) setNoComments(true);
-    else {
-      setNoComments(false);
-      comments.map((item) => {
-        let commentMonth = new Date(
-          item.data().createdAt.toMillis()
-        ).getMonth();
-        if (months.includes(commentMonth) === false) {
-          setMonths(months.push(commentMonth));
-          setMonths(months.sort());
+
+  const checkComments = () => {
+    for (let i = 0; i < comments.length; i++) {
+      let cm = new Date(comments[i].data().createdAt.toMillis()).getMonth();
+      for (let j = 0; j < months.length; j++) {
+        let wm = months[j].month;
+        if (cm === wm) {
+          months[j].comments.push({
+            key: comments[i].data().cid,
+            sender: comments[i].data().sender.sender,
+            content: comments[i].data().content.content,
+            selectedType: comments[i].data().type.selectType,
+            createdAt: Date(comments[i].data().createdAt).toString(),
+          });
         }
-      });
+      }
     }
-  };*/
+  };
 
   useEffect(() => {
     reRender();
     getData();
   }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
     checkComments();
-    console.log(months);
-  }, [comments]);*/
+    setMonths((months) => months.sort((a, b) => a.month - b.month));
+  }, [comments]);
 
   const [init, setInit] = useState(false);
   const reRender = () => {
@@ -117,6 +119,11 @@ const SharePage = () => {
           <h1>{userName}의 소원</h1>
           <h2>{userWish}</h2>
           <hr />
+          <div>
+            {months.map((item) => {
+              return <button key={item.month}>{item.month}월의 댓글</button>;
+            })}
+          </div>
           <div>
             {console.log(months)}
             {comments.map((item) => {
