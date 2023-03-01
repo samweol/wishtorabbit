@@ -41,8 +41,6 @@ const SharePage = () => {
       let currentMonth = new Date().getMonth();
       if (wishMonth === currentMonth) {
         setUserWish(doc.data().content);
-      } else {
-        setUserWish("");
       }
       setMonths((months) => [
         { month: wishMonth, wishContent: doc.data().content, comments: [] },
@@ -97,11 +95,11 @@ const SharePage = () => {
       setInit(true);
     }, 1000);
   };
-
+  //몇월의 떡을 클릭했는지
   const monthBtnClicked = (event) => {
     setClickedMonth((prev) => event.target.value);
   };
-
+  //클릭한 월의 comment 배열은 무엇인지
   useEffect(() => {
     for (let i = 0; i < months.length; i++) {
       if (months[i].month == clickedMonth) {
@@ -109,7 +107,7 @@ const SharePage = () => {
       }
     }
   }, [clickedMonth]);
-
+  //클릭한 월이 현재 달과 다를 경우, 화면에 표시
   useEffect(() => {
     for (let i = 0; i < months.length; i++) {
       if (months[i].month == clickedMonth) {
