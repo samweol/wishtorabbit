@@ -4,6 +4,7 @@ import { collection, addDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import uuid from "react-uuid";
 import { useNavigate } from "react-router-dom";
+import styles from "../../style/auth.module.css";
 
 const Register = () => {
   const [email, setEmail] = useState(""); // email
@@ -53,14 +54,17 @@ const Register = () => {
 
   return (
     <div>
-      <h1>회원가입 해라</h1>
-      <form onSubmit={onSubmit}>
+      <hr className={styles.line} />
+      <h1 className={styles.header}>🐇 회원가입을 해주세요 🐇</h1>
+      <hr className={styles.line} />
+      <form onSubmit={onSubmit} className={styles.centerBox}>
         <input
           name="email"
           type="text"
           placeholder="Email"
           value={email}
           onChange={onChange}
+          className={styles.inputBox}
         />
         <input
           name="password"
@@ -68,15 +72,19 @@ const Register = () => {
           placeholder="Password"
           value={password}
           onChange={onChange}
+          className={styles.inputBox}
         />
+        <hr className={styles.line} />
         <input
           name="username"
           type="text"
           placeholder="Username"
           value={username}
           onChange={onChange}
+          className={styles.inputBox}
         />
-        <input type="submit" value="Create Account" />
+        <hr className={styles.line} />
+        <input type="submit" value="🤍" className={styles.submitBtn} />
       </form>
     </div>
   );

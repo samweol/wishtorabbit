@@ -39,12 +39,9 @@ export function UserContextProvider({ children }) {
     });
   }, []);
 
-  // value는 객체이므로 리렌더링의 주범이 됨
-  // 따라서 useMemo로 캐싱해두기
-  //const value = useMemo(() => ({ setUser }), [setUser]);
   return (
-    // 변수명.Provider 문법으로 그 범위 안에 있는 컴포넌트한테 값을 공유할 수 있음
-    // value 값에 전송할 props 넣기 속성명(value)는 임의 변경 불가
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
   );
 }

@@ -1,0 +1,58 @@
+@font-face {
+  font-family: "HSJiptokki-Round";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/HSJiptokki-Round.woff2")
+    format("woff2");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SaenggeoJincheon";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/SaenggeoJincheon.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+.header {
+  font-family: "HSJiptokki-Round";
+  color: #cb7575;
+  font-size: 2rem;
+  padding: 24px 0;
+  text-align: center;
+}
+.middleHeader {
+  font-family: "HSJiptokki-Round";
+  color: #ef9e9f;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.error {
+  font-family: "HSJiptokki-Round";
+  color: #ef9e9f;
+  font-size: 1.4rem;
+  text-align: center;
+}
+.inputBox {
+  width: 350px;
+  height: 30px;
+  font-family: "SaenggeoJincheon";
+  margin: 10px 10px 0px 10px;
+}
+.submitBtn {
+  font-family: "HSJiptokki-Round";
+  background-color: #a3c9c7;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1rem;
+  margin: 5px 0px 5px 0px;
+}
+.line {
+  border: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #a3c9c7;
+}
+.centerBox {
+  text-align: center;
+}
