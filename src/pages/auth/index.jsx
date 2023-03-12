@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../routes/firebase";
 import { UserContext } from "../../context/UserContext";
+import styles from "../../style/auth.module.css";
 
 export default function Auth() {
   const { user } = useContext(UserContext); //user정보 전역 저장
@@ -39,13 +40,26 @@ export default function Auth() {
   if (haveAccount === false) {
     return (
       <div>
-        <h1>계정이 있습니까?</h1>
-        <button type="submit" onClick={onLogInClick}>
-          yes
-        </button>
-        <button type="submit" onClick={onRegisterClick}>
-          no
-        </button>
+        <hr className={styles.line} />
+        <h1 className={styles.header}>🤍🐇Wish To Rabbit🐇🤍</h1>
+        <h2 className={styles.middleHeader}>계정이 있습니까?</h2>
+        <hr className={styles.line} />
+        <div className={styles.centerBox}>
+          <button
+            type="submit"
+            onClick={onLogInClick}
+            className={styles.submitBtn}
+          >
+            YES
+          </button>
+          <button
+            type="submit"
+            onClick={onRegisterClick}
+            className={styles.submitBtn}
+          >
+            NO
+          </button>
+        </div>
       </div>
     );
   } else
